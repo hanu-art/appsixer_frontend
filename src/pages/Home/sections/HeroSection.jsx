@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 const heroImages = [
-  "/images/hero/first_hero.jpg",
-  "/images/hero/second_hero.jpg",
-  "/images/hero/third_hero.jpg",
-  "/images/hero/fourth_hero.jpg",
-  "/images/hero/fifith_hero.jpg",
-  "/images/hero/six_hero.jpg",
-  "/images/hero/seven_hero.jpg",
+  "/images/hero/first_hero.webp",
+  "/images/hero/second_hero.webp",
+  "/images/hero/third_hero.webp",
+  "/images/hero/fourth_hero.webp",
+  "/images/hero/fifith_hero.webp",
+  "/images/hero/six_hero.webp",
+  "/images/hero/seven_hero.webp",
 ];
 
 const HeroSection = () => {
