@@ -7,10 +7,10 @@ import {
     Layers,
   } from "lucide-react";
   
-  import centerUp from "../../../assets/company/whychoose/center_up.jpg";
-  import leftUp from "../../../assets/company/whychoose/left_up.jpg";
-  import mainBg from "../../../assets/company/whychoose/main_bg.jpg";
-  import rightUp from "../../../assets/company/whychoose/right_up.jpg";
+  import centerUp from "../../../assets/company/whychoose/center_up 4.14.04 PM.webp";
+  import leftUp from "../../../assets/company/whychoose/left_up.webp";
+  import mainBg from "../../../assets/company/whychoose/main_bg.webp";
+  import rightUp from "../../../assets/company/whychoose/right_up.webp";
   
   const expertiseList = [
     {
@@ -90,6 +90,7 @@ import {
             <img
               src={mainBg}
               alt="Background"
+               loading="lazy"
               className="absolute inset-0 w-full h-[80%] object-cover rounded-3xl"
             />
   
@@ -97,13 +98,15 @@ import {
             <img
               src={leftUp}
               alt=""
+               loading="lazy"
               className="absolute bottom-0 left-0 w-[320px] translate-y-[12%] rounded-2xl shadow-2xl z-20"
             />
   
             {/* CENTER – MEDIUM */}
             <img
               src={centerUp}
-              alt=""
+              alt="" 
+               loading="lazy"
               className="absolute bottom-14 left-1/2 -translate-x-1/2 w-[240px] rounded-xl shadow-xl z-30"
             />
   
@@ -111,7 +114,8 @@ import {
             <img
               src={rightUp}
               alt=""
-              className="absolute top-16 right-0 w-[180px] rounded-xl shadow-lg z-10"
+              className="absolute top-16 right-0 w-[180px] rounded-xl shadow-lg z-10" 
+              loading="lazy"
             />
           </div>
   

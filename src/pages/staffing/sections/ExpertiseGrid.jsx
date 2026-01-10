@@ -17,7 +17,7 @@ import {
   } from "react-icons/fa";
   
   // NOTE: Image is inside src/assets/staffing/
-  import bgImage from "../../../assets/staffing/expertise.jpg";
+  import bgImage from "../../../assets/staffing/expertise.webp";
   
   const expertise = [
     { icon: SiApple, label: "iOS App Development" },

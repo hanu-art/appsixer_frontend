@@ -1,4 +1,4 @@
-import aboutCompanyTop from "../../../assets/company/top/about_company_top.jpg";
+import aboutSideImage from "../../../assets/company/top/about_company_top.webp";
 
 const TopSection = () => {
   return (
@@ -8,14 +8,14 @@ const TopSection = () => {
       <div className="relative h-[55vh] md:h-[65vh] w-full overflow-hidden bg-black">
         
         <img
-          src={aboutCompanyTop}
+          src={aboutSideImage}
           alt="About Appsixer Company"
           className="
             h-full w-full
             object-contain md:object-cover
             object-center md:object-left
           "
-          loading="eager"
+          loading="lazy"
           fetchpriority="high"
         />
 
@@ -46,4 +46,4 @@ const TopSection = () => {
   );
 };
 
-export default TopSection;
+export default TopSection

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import slideOne from "../../../assets/slidebottem/slide_one.jpg";
-import slideTwo from "../../../assets/slidebottem/slide_two.jpg";
+import slideOne from "../../../assets/slidebottem/slide_one.webp";
+import slideTwo from "../../../assets/slidebottem/slide_two.webp";
 
 const slideImages = [slideOne, slideTwo];
 

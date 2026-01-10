@@ -1,4 +1,4 @@
-import staffingTop from "../../../assets/staffing/staffing_top.jpg";
+import staffingTop from "../../../assets/staffing/staffing_top.webp";
 
 const Proposal = () => {
   return (

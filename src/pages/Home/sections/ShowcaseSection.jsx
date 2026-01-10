@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-import firstShow from "../../../assets/ShowCase/first_show.jpg";
-import secondShow from "../../../assets/ShowCase/second_show.jpg";
-import thirdShow from "../../../assets/ShowCase/third_show.jpg";
-import fourthShow from "../../../assets/ShowCase/fourth_show.jpg";
-import fifthShow from "../../../assets/ShowCase/fifth_show.jpg";
-import sixShow from "../../../assets/ShowCase/six_show.jpg";
-import sevenShow from "../../../assets/ShowCase/seven_show.jpg";
+import firstShow from "../../../assets/ShowCase/first_show.webp";
+import secondShow from "../../../assets/ShowCase/second_show.webp";
+import thirdShow from "../../../assets/ShowCase/third_show.webp";
+import fourthShow from "../../../assets/ShowCase/fourth_show.webp";
+import fifthShow from "../../../assets/ShowCase/fifth_show.webp";
+import sixShow from "../../../assets/ShowCase/six_show.webp";
+import sevenShow from "../../../assets/ShowCase/seven_show.webp";
 
 const showcaseImages = [
   firstShow,

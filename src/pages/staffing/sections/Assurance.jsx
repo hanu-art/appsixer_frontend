@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import assureImage from "../../../assets/staffing/staffing_assurance.jpg";
+import assureImage from "../../../assets/staffing/staffing_assurance.webp";
 
 const Assurance = () => {
   const sectionRef = useRef(null);

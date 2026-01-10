@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import aboutSideImage from "../../../assets/company/top/company_top_2.jpg";
+import aboutSideImage from "../../../assets/company/top/company_top_2.webp";
 
 const ImageContentSection = () => {
   const navigate = useNavigate();
