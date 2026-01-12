@@ -7,6 +7,7 @@ const Header = () => {
   const location = useLocation();
 
   const isContactPage = location.pathname === "/contact";
+  const isHome = location.pathname === "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 70);
@@ -18,7 +19,8 @@ const Header = () => {
     <>
       {/* ================= HEADER ================= */}
       <header className="fixed top-0 left-0 w-full z-50">
-        {/* TOP INFO BAR (DESKTOP) */}
+        
+        {/* TOP INFO BAR (DESKTOP ONLY) */}
         <div
           className={`hidden md:block transition-all duration-300 ${
             scrolled ? "bg-black/80" : "bg-black/60"
@@ -34,21 +36,18 @@ const Header = () => {
         {/* MAIN NAVBAR */}
         <div
           className={`transition-all duration-300 ${
-            scrolled ? "bg-[#007bff] shadow-lg" : "bg-transparent"
+            scrolled || !isHome
+              ? "bg-[#007bff] shadow-lg"
+              : "bg-transparent"
           }`}
         >
           <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-            {/* ===== LOGO (HOME LINK) ===== */}
+            {/* LOGO */}
             <Link to="/" className="flex items-center gap-3 group">
-              {/* LOGO ICON */}
               <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-white text-[#007bff] shadow-md group-hover:shadow-lg transition">
-                <span className="text-lg font-extrabold tracking-tight">
-                  {"</>"}
-                </span>
+                <span className="text-lg font-extrabold">{`</>`}</span>
               </div>
-
-              {/* WORDMARK */}
               <div className="flex flex-col leading-none">
                 <span className="text-2xl font-extrabold text-white tracking-wide">
                   App<span className="text-blue-200">sixer</span>
@@ -64,8 +63,41 @@ const Header = () => {
               <Link to="/" className="hover:opacity-90">HOME</Link>
               <Link to="/company" className="hover:opacity-90">COMPANY</Link>
               <Link to="/staffing" className="hover:opacity-90">STAFFING</Link>
-              <Link to="/privacy-policy" className="hover:opacity-90">PRIVACY</Link>
               <Link to="/career" className="hover:opacity-90">CAREER</Link>
+
+              {/* LEGAL DROPDOWN */}
+              <div className="relative group cursor-pointer">
+                <span className="flex items-center gap-1 hover:opacity-90">
+                  LEGAL
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </span>
+
+                {/* Dropdown */}
+                <div className="absolute top-full left-0 mt-3 w-52 bg-white rounded-lg shadow-xl
+                                opacity-0 invisible group-hover:opacity-100 group-hover:visible
+                                transition-all duration-200">
+                  <Link
+                    to="/privacy-policy"
+                    className="block px-5 py-3 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Privacy Policy
+                  </Link>
+                  <Link
+                    to="/terms-conditions"
+                    className="block px-5 py-3 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Terms & Conditions
+                  </Link>
+                </div>
+              </div>
             </nav>
 
             {/* DESKTOP CTA */}
@@ -75,7 +107,7 @@ const Header = () => {
                 ${
                   isContactPage
                     ? "text-white border border-white/40 hover:bg-white/10"
-                    : scrolled
+                    : scrolled || !isHome
                     ? "bg-white text-[#007bff] hover:bg-gray-100"
                     : "bg-[#007bff] text-white hover:bg-[#0069d9]"
                 }
@@ -95,24 +127,21 @@ const Header = () => {
         </div>
       </header>
 
-      {/* ================= MOBILE SIDE DRAWER ================= */}
+      {/* ================= MOBILE DRAWER ================= */}
       {menuOpen && (
         <>
-          {/* OVERLAY */}
+          {/* Overlay */}
           <div
             className="fixed inset-0 bg-black/40 z-40"
             onClick={() => setMenuOpen(false)}
           />
 
-          {/* DRAWER */}
-          <div className="fixed top-0 left-0 h-full w-[60%] max-w-xs bg-[#007bff] z-50 shadow-xl">
-            {/* LOGO AREA */}
+          {/* Drawer */}
+          <div className="fixed top-0 left-0 h-full w-[75%] max-w-xs bg-[#007bff] z-50 shadow-xl">
+            
+            {/* Drawer Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-white/20">
-              <Link
-                to="/"
-                onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-2"
-              >
+              <Link to="/" onClick={() => setMenuOpen(false)} className="flex items-center gap-2">
                 <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-white text-[#007bff] shadow">
                   <span className="font-extrabold">{`</>`}</span>
                 </div>
@@ -124,24 +153,31 @@ const Header = () => {
                 </div>
               </Link>
 
-              <button
-                onClick={() => setMenuOpen(false)}
-                className="text-xl text-white"
-              >
+              <button onClick={() => setMenuOpen(false)} className="text-xl text-white">
                 ✕
               </button>
             </div>
 
-            {/* NAV LINKS */}
+            {/* Links */}
             <nav className="flex flex-col px-5 py-6 gap-5 text-white text-base font-medium">
               <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
               <Link to="/company" onClick={() => setMenuOpen(false)}>Company</Link>
               <Link to="/staffing" onClick={() => setMenuOpen(false)}>Staffing</Link>
-              <Link to="/privacy-policy" onClick={() => setMenuOpen(false)}>Privacy Policy</Link>
-              <Link to="/terms-conditions" onClick={() => setMenuOpen(false)}>Terms & Conditions</Link>
               <Link to="/career" onClick={() => setMenuOpen(false)}>Career</Link>
 
-              {/* SUBTLE CTA */}
+              {/* Legal group */}
+              <div className="pt-4 border-t border-white/20">
+                <p className="text-sm uppercase tracking-widest text-blue-100 mb-3">
+                  Legal
+                </p>
+                <Link to="/privacy-policy" onClick={() => setMenuOpen(false)}>
+                  Privacy Policy
+                </Link>
+                <Link to="/terms-conditions" onClick={() => setMenuOpen(false)}>
+                  Terms & Conditions
+                </Link>
+              </div>
+
               <Link
                 to="/contact"
                 onClick={() => setMenuOpen(false)}
