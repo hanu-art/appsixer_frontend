@@ -2,11 +2,11 @@ import worldmap from "../../../assets/endmap/worldmap1.png";
 
 const Promise = () => {
   return (
-    <section className="w-full mt-22 mb-22">
+    <section className="w-full py-16 sm:py-20">
       
-      {/* Trust Heading */}
-      <div className="max-w-6xl mx-auto px-6 md:px-12 mb-12 text-center">
-        <h2 className="text-3xl md:text-4xl font-semibold text-slate-700">
+      {/* Heading */}
+      <div className="max-w-6xl mx-auto px-6 md:px-12 mb-10 sm:mb-14 text-center">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-slate-700 leading-snug">
           Trust is built when clarity, consistency, and commitment come together.
         </h2>
 
@@ -16,18 +16,19 @@ const Promise = () => {
       </div>
 
       {/* Image */}
-      <div className="w-full">
+      <div className="w-full flex justify-center px-0 sm:px-6">
         <img
           src={worldmap}
           alt="Global trust and presence"
           className="
             w-full
             h-auto
-            max-h-[520px] md:max-h-[620px]
+            max-w-none sm:max-w-[1400px]
+            max-h-[520px] sm:max-h-[460px] md:max-h-[620px]
             object-contain
-            block
-            mx-auto
           "
+          loading="lazy"
+          decoding="async"
         />
       </div>
 
