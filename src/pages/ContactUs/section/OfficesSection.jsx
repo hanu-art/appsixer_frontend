@@ -48,9 +48,7 @@ Spokane, WA 99201-0581`,
       flag: "🇮🇳",
       title: "India Office",
       subtitle: "Development Center",
-      address: `Flat No 201, 19, KrishanKunj Apartment
-Paliskar Colony
-Madhya Pradesh 452004`,
+      address: `pu-54 vijaynagar indore`,
       email: "contact@appsixer.com",
       phone: "+919893596975",
       skype: "contact appsixer",

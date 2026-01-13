@@ -1,14 +1,20 @@
 import { Routes, Route } from "react-router-dom";
 import PublicRoutes from "./PublicRoutes";
-import AuthRoutes from "./AuthRoutes";
-import ProtectedRoutes from "./ProtectedRoutes";
+import AdminRoutes from "./AdminRoutes";
+
 
 const AppRoutes = () => {
-  return (
+  return ( 
+   
     <Routes>
-      <Route path="/auth/*" element={<AuthRoutes />} />
-      <Route path="/dashboard/*" element={<ProtectedRoutes />} />
-      <Route path="/*" element={<PublicRoutes />} />
+    
+        {/* Admin Panel */}
+        <Route path="/admin/*" element={<AdminRoutes />} />
+
+
+      <Route path="/*" element={<PublicRoutes />} />. 
+
+        
     </Routes>
   );
 };

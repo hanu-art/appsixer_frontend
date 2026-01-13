@@ -9,7 +9,8 @@ import Home from "../pages/Home/Home";
 // LAZY (secondary pages)
 const Company = lazy(() => import("../pages/company/Company"));
 const Staffing = lazy(() => import("../pages/staffing/Staffing"));
-const Contact = lazy(() => import("../pages/ContactUs/Contact"));
+const Contact = lazy(() => import("../pages/ContactUs/Contact")); 
+const Career = lazy(()=>import("../pages/career/Career"))
 const PrivacyPolicy = lazy(() =>
   import("../pages/PrivacyPolicy/PrivacyPolicy")
 );
@@ -28,6 +29,7 @@ const PublicRoutes = () => {
           <Route path="/staffing" element={<Staffing />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-conditions" element={<TermsConditions />} />
+          <Route path="/career" element={<Career />} />
         </Route>
       </Routes>
     </Suspense>
