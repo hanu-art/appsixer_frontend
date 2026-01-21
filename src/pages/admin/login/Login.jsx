@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { loginAdmin } from "../../../api/auth.api";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,6 +11,8 @@ const Login = () => {
   });
 
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleChange = (e) => {
     setForm({
@@ -18,7 +21,7 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!form.email || !form.password) {
@@ -26,12 +29,42 @@ const Login = () => {
       return;
     }
 
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
     setError("");
-    navigate("/admin/dashboard");
+
+    try {
+      await loginAdmin(form);
+
+      // ✅ show success popup
+      setShowPopup(true);
+
+      // popup dikhe → fir redirect
+      setTimeout(() => {
+        setShowPopup(false);
+        navigate("/admin/dashboard");
+      }, 1500);
+    } catch (err) {
+      const message =
+        err?.response?.data?.message ||
+        "Invalid email or password";
+      setError(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral-100">
+      
+      {/* 🔔 SUCCESS POPUP */}
+      {showPopup && (
+        <div className="fixed top-6 right-6 z-50 bg-black text-white px-6 py-4 rounded-lg shadow-lg text-sm flex items-center gap-2 animate-fade-in">
+          ✅ Login successful. Redirecting…
+        </div>
+      )}
+
       <div className="w-[380px] bg-white rounded-xl shadow-lg border border-gray-100 p-8">
         
         {/* Heading */}
@@ -74,25 +107,29 @@ const Login = () => {
           />
 
           {/* Primary CTA */}
-           
           <button
-  className="w-full bg-[#007bff] hover:bg-[#0069d9] text-white
-             text-sm font-medium px-6 py-2.5 rounded-md transition
-             cursor-pointer"
->
-  Sign in
-</button>
-
+            type="submit"
+            disabled={isSubmitting}
+            className={`w-full text-white text-sm font-medium px-6 py-2.5 rounded-md transition
+              ${
+                isSubmitting
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-[#007bff] hover:bg-[#0069d9]"
+              }`}
+          >
+            {isSubmitting ? "Signing in..." : "Sign in"}
+          </button>
         </form>
 
         {/* Secondary Action */}
         <button
-  className="w-full mt-4 border border-gray-300 text-gray-700
-             text-sm font-medium px-6 py-2.5 rounded-md
-             hover:bg-gray-50 transition cursor-pointer"
->
-  Back to Home
-</button>
+          onClick={() => navigate("/")}
+          className="w-full mt-4 border border-gray-300 text-gray-700
+                     text-sm font-medium px-6 py-2.5 rounded-md
+                     hover:bg-gray-50 transition cursor-pointer"
+        >
+          Back to Home
+        </button>
 
         {/* Footer */}
         <p className="text-xs text-gray-400 text-center mt-6">

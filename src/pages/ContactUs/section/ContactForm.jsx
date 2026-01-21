@@ -1,5 +1,6 @@
 import { forwardRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { submitContact } from "../../../api/contact.api";
 
 const ContactForm = forwardRef((props, ref) => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,9 @@ const ContactForm = forwardRef((props, ref) => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showPopup, setShowPopup] = useState(false); // 👈 popup state
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -21,24 +25,55 @@ const ContactForm = forwardRef((props, ref) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    if (isSubmitting) return;
 
-    // 🔗 API CALL YAHAN AAYEGI (future-ready)
-    setTimeout(() => {
-      console.log("Submitted Data:", formData);
-      setIsSubmitting(false);
+    setIsSubmitting(true);
+    setSuccessMessage("");
+    setErrorMessage("");
+
+    try {
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+      };
+
+      await submitContact(payload);
+
+      // ✅ Popup show
+      setShowPopup(true);
+      setTimeout(() => setShowPopup(false), 3500);
+
+      setSuccessMessage(
+        "Thank you! Our team will contact you within 24 business hours."
+      );
+
       setFormData({
         name: "",
         email: "",
         message: "",
         consent: false,
       });
-      alert("Thank you! Our team will contact you within 24 business hours.");
-    }, 1200);
+    } catch (error) {
+      const message =
+        error?.response?.data?.message ||
+        "Something went wrong. Please try again later.";
+      setErrorMessage(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <section ref={ref} className="max-w-4xl mx-auto px-6 py-16">
+    <section ref={ref} className="max-w-4xl mx-auto px-6 py-16 relative">
+      
+      {/* 🔔 SUCCESS POPUP (NO UI BREAK) */}
+      {showPopup && (
+        <div className="fixed top-6 right-6 z-50 bg-black text-white px-6 py-4 rounded-lg shadow-lg text-sm flex items-center gap-2 animate-fade-in">
+          ✅ Your request has been submitted successfully
+        </div>
+      )}
+
       <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8 md:p-10">
         
         {/* Header */}
@@ -68,8 +103,7 @@ const ContactForm = forwardRef((props, ref) => {
                 onChange={handleChange}
                 required
                 placeholder="John Doe"
-                className="w-full rounded-lg border border-gray-300
-                           px-4 py-3 text-sm
+                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm
                            focus:outline-none focus:border-[#007bff]"
               />
             </div>
@@ -86,8 +120,7 @@ const ContactForm = forwardRef((props, ref) => {
                 onChange={handleChange}
                 required
                 placeholder="you@company.com"
-                className="w-full rounded-lg border border-gray-300
-                           px-4 py-3 text-sm
+                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm
                            focus:outline-none focus:border-[#007bff]"
               />
             </div>
@@ -105,10 +138,8 @@ const ContactForm = forwardRef((props, ref) => {
               rows="6"
               required
               placeholder="Briefly describe your project, goals, timeline, or any specific requirements..."
-              className="w-full rounded-lg border border-gray-300
-                         px-4 py-3 text-sm
-                         focus:outline-none focus:border-[#007bff]
-                         resize-none"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm
+                         focus:outline-none focus:border-[#007bff] resize-none"
             />
             <p className="text-xs text-gray-500 mt-2">
               This helps us understand your requirements better.
@@ -142,28 +173,33 @@ const ContactForm = forwardRef((props, ref) => {
                 </Link>.
                 <br />
                 For any queries, contact{" "}
-                <a
-                  href="mailto:info@appsixer.com"
-                  className="text-[#007bff] font-medium hover:underline"
-                >
+                <a href="mailto:info@appsixer.com" className="text-[#007bff] font-medium hover:underline">
                   info@appsixer.com
                 </a>.
               </p>
             </div>
           </div>
 
+          {/* Inline Messages (unchanged) */}
+          {successMessage && (
+            <div className="bg-green-50 border border-green-200 text-green-700 text-sm rounded-lg p-4 text-center">
+              {successMessage}
+            </div>
+          )}
+
+          {errorMessage && (
+            <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg p-4 text-center">
+              {errorMessage}
+            </div>
+          )}
+
           {/* Submit */}
           <div className="pt-4 flex flex-col items-center gap-3">
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`px-10 py-3 rounded-md text-sm font-semibold text-white
-                transition-colors duration-200
-                ${
-                  isSubmitting
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-[#007bff] hover:bg-[#0069d9]"
-                }`}
+              className={`px-10 py-3 rounded-md text-sm font-semibold text-white transition-colors duration-200
+                ${isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-[#007bff] hover:bg-[#0069d9]"}`}
             >
               {isSubmitting ? "Sending..." : "Submit"}
             </button>
