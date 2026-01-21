@@ -1,8 +1,9 @@
+import { useState, useEffect } from "react";
 import { getContactsStats } from "../../../../api/counter.api";
-import { useState, useEffect } from 'react';
+import StatsChart from "./StatsChart";
 
 const DashboardStats = () => {
-  const [stats, setStats] = useState(null);
+  const [statsData, setStatsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -14,67 +15,87 @@ const DashboardStats = () => {
     try {
       setLoading(true);
       const response = await getContactsStats();
-      
+
       if (response.success) {
-        // API response format ke hisab se map karo
-        const apiStats = [
-          { label: "Total Inquiries", value: response.data.total || 0, color: "gray" },
-          { label: "New", value: response.data.new || 0, color: "blue" },
-          { label: "Contacted", value: response.data.contacted || 0, color: "yellow" },
-          { label: "Resolved", value: response.data.resolved || 0, color: "green" },
-        ];
-        setStats(apiStats);
+        setStatsData(response.data);
       }
     } catch (err) {
       setError(err.message);
-      // Fallback to static data if API fails
-      const fallbackStats = [
-        { label: "Total Inquiries", value: 0, color: "gray" },
-        { label: "New", value: 0, color: "blue" },
-        { label: "Contacted", value: 0, color: "yellow" },
-        { label: "Resolved", value: 0, color: "green" },
-      ];
-      setStats(fallbackStats);
+      setStatsData({
+        total: 0,
+        new: 0,
+        contacted: 0,
+        resolved: 0,
+      });
     } finally {
       setLoading(false);
     }
   };
 
+  /* ---------------- LOADING STATE ---------------- */
   if (loading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        {[...Array(4)].map((_, index) => (
-          <div key={index} className="bg-white rounded-lg p-5 border border-gray-200 animate-pulse">
-            <div className="h-4 w-24 bg-gray-200 rounded"></div>
-            <div className="mt-2 h-8 w-12 bg-gray-200 rounded"></div>
+      <div className="space-y-6">
+        {/* Chart Skeleton */}
+        <div className="bg-white rounded-lg p-6 border border-gray-200 animate-pulse">
+          <div className="h-6 w-48 bg-gray-200 rounded mb-4" />
+          <div className="h-56 bg-gray-200 rounded" />
+        </div>
+
+        {/* Cards Skeleton */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-lg p-4 border border-gray-200 animate-pulse"
+            >
+              <div className="h-4 w-24 bg-gray-200 rounded" />
+              <div className="mt-2 h-7 w-12 bg-gray-200 rounded" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  /* ---------------- ERROR STATE ---------------- */
+  if (error) {
+    return (
+      <div className="text-center p-4 bg-gray-50 border border-gray-200 rounded-lg">
+        <p className="text-sm text-gray-600">
+          Stats temporarily unavailable
+        </p>
+      </div>
+    );
+  }
+
+  const statsCards = [
+    { label: "Total Inquiries", value: statsData.total },
+    { label: "New", value: statsData.new },
+    { label: "Contacted", value: statsData.contacted },
+    { label: "Resolved", value: statsData.resolved },
+  ];
+
+  /* ---------------- MAIN UI ---------------- */
+  return (
+    <div className="space-y-6">
+      {/* CHART (FULL WIDTH HERO) */}
+      <StatsChart data={statsData} />
+
+      {/* STATS CARDS (BELOW CHART) */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {statsCards.map((item, index) => (
+          <div
+            key={index}
+            className="bg-white p-4 border border-gray-200 rounded-lg"
+          >
+            <p className="text-sm text-gray-500">{item.label}</p>
+            <p className="mt-1 text-xl font-semibold text-gray-900">
+              {item.value}
+            </p>
           </div>
         ))}
       </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="text-center p-4 bg-red-50 border border-red-200 rounded-lg">
-        <p className="text-red-600">Error loading stats: {error}</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-      {stats.map((item, index) => (
-        <div 
-          key={index} 
-          className="bg-white rounded-lg p-5 border border-gray-200 hover:border-gray-300 transition-colors"
-        >
-          <p className="text-sm text-gray-600 font-medium">{item.label}</p>
-          <p className="mt-2 text-2xl font-normal text-gray-800">
-            {item.value}
-          </p>
-          <div className={`mt-3 h-1 w-12 rounded-full bg-${item.color}-100`}></div>
-        </div>
-      ))}
     </div>
   );
 };
