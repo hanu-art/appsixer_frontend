@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   CalendarDays,
   MapPin,
@@ -33,6 +33,8 @@ const JobSkeletonCard = () => (
 
 /* ---------------- MAIN COMPONENT ---------------- */
 const NewJobs = () => {
+  const topRef = useRef(null); // 🔥 component top ref
+
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,6 +47,14 @@ const NewJobs = () => {
   const JOBS_PER_PAGE = 9;
 
   useEffect(() => {
+    // ✅ scroll to component top (NOT page top)
+    if (topRef.current) {
+      topRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+
     fetchJobs();
   }, [currentPage]);
 
@@ -91,7 +101,7 @@ const NewJobs = () => {
   /* ---------------- LOADING UI ---------------- */
   if (loading) {
     return (
-      <div className="p-4 md:p-6 min-h-screen bg-gray-50">
+      <div ref={topRef} className="p-4 md:p-6 min-h-screen bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <div className="mb-10">
             <div className="h-8 w-72 bg-gray-200 rounded mb-3 animate-pulse" />
@@ -110,14 +120,13 @@ const NewJobs = () => {
 
   /* ---------------- MAIN UI ---------------- */
   return (
-    <div className="p-4 md:p-6 min-h-screen bg-gray-50">
+    <div ref={topRef} className="p-4 md:p-6 min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto">
         {/* HEADER */}
         <div className="mb-10">
           <h1 className="text-3xl font-semibold text-gray-900 mb-2">
             Latest Job Opportunities
           </h1>
-        
 
           <div className="flex flex-wrap items-center gap-3 mt-4">
             <span className="px-4 py-1.5 bg-[#007bff] text-white text-sm font-medium rounded-full">

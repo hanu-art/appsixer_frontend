@@ -44,19 +44,15 @@ const Header = () => {
           <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
             {/* LOGO */}
-            <Link to="/" className="flex items-center gap-3 group">
-              <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-white text-[#007bff] shadow-md group-hover:shadow-lg transition">
-                <span className="text-lg font-extrabold">{`</>`}</span>
-              </div>
-              <div className="flex flex-col leading-none">
-                <span className="text-2xl font-extrabold text-white tracking-wide">
-                  App<span className="text-blue-200">sixer</span>
-                </span>
-                <span className="text-[10px] text-blue-100 tracking-widest uppercase">
-                  Software Solutions
-                </span>
-              </div>
-            </Link>
+           {/* LOGO */}
+          <Link to="/" className="flex items-center">
+  <img
+    src="/logo/appsixer_logo.jpg"
+    alt="Appsixer Logo"
+    className="h-10 w-auto object-contain"
+  />
+</Link>
+
 
             {/* DESKTOP NAV */}
             <nav className="hidden lg:flex items-center gap-10 text-white text-sm font-medium">
@@ -141,17 +137,14 @@ const Header = () => {
             
             {/* Drawer Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-white/20">
-              <Link to="/" onClick={() => setMenuOpen(false)} className="flex items-center gap-2">
-                <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-white text-[#007bff] shadow">
-                  <span className="font-extrabold">{`</>`}</span>
-                </div>
-                <div className="flex flex-col leading-none text-white">
-                  <span className="font-bold tracking-wide">Appsixer</span>
-                  <span className="text-[10px] tracking-widest uppercase text-blue-100">
-                    Software Solutions
-                  </span>
-                </div>
-              </Link>
+               <Link to="/" onClick={() => setMenuOpen(false)} className="flex items-center gap-2">
+  <img
+    src="/logo/appsixer_logo.jpg"
+    alt="Appsixer Logo"
+    className="h-9 w-auto object-contain bg-white rounded-md px-2 py-1"
+  />
+</Link>
+
 
               <button onClick={() => setMenuOpen(false)} className="text-xl text-white">
                 ✕

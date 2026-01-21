@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react"; // 🔥 useRef added
 import { useNavigate } from "react-router-dom";
 import AdminLayout from "../../../../components/layout/AdminLayout";
 import { getAllContacts } from "../../../../api/adminContact.api";
 
 const AdminContacts = () => {
   const navigate = useNavigate();
+  const topRef = useRef(null); // 🔥 component top ref
 
   const [contacts, setContacts] = useState([]);
   const [meta, setMeta] = useState({});
@@ -27,6 +28,14 @@ const AdminContacts = () => {
   };
 
   useEffect(() => {
+    // 🔥 scroll to component top (NOT page top)
+    if (topRef.current) {
+      topRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+
     fetchContacts(page);
   }, [page]);
 
@@ -36,6 +45,9 @@ const AdminContacts = () => {
 
   return (
     <AdminLayout>
+      {/* 🔥 COMPONENT TOP ANCHOR */}
+      <div ref={topRef} />
+
       {/* HEADER */}
       <div className="mb-8">
         <h1 className="text-3xl font-semibold text-gray-600 tracking-tight">
@@ -62,19 +74,13 @@ const AdminContacts = () => {
             <thead>
               <tr className="text-left text-gray-500">
                 <th className="px-6 py-4 font-medium">Customer</th>
-
-                {/* ❌ hide on mobile */}
                 <th className="hidden md:table-cell px-6 py-4 font-medium">
                   Message
                 </th>
-
                 <th className="px-6 py-4 font-medium">Status</th>
-
-                {/* ❌ hide on mobile */}
                 <th className="hidden md:table-cell px-6 py-4 font-medium">
                   Received
                 </th>
-
                 <th className="px-6 py-4 text-right font-medium">
                   Action
                 </th>
@@ -87,7 +93,6 @@ const AdminContacts = () => {
                   key={contact.id}
                   className="border-t hover:bg-gray-50 transition"
                 >
-                  {/* CUSTOMER */}
                   <td className="px-6 py-4">
                     <div className="font-medium text-gray-900">
                       {contact.name}
@@ -96,20 +101,17 @@ const AdminContacts = () => {
                       {contact.email}
                     </div>
 
-                    {/* 📱 MOBILE: show date here */}
                     <div className="md:hidden text-xs text-gray-400 mt-1">
                       {new Date(contact.created_at).toLocaleDateString()}
                     </div>
                   </td>
 
-                  {/* MESSAGE (DESKTOP ONLY) */}
                   <td className="hidden md:table-cell px-6 py-4 max-w-md">
                     <p className="text-gray-700 truncate">
                       {contact.message}
                     </p>
                   </td>
 
-                  {/* STATUS */}
                   <td className="px-6 py-4">
                     <span
                       className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium
@@ -125,12 +127,10 @@ const AdminContacts = () => {
                     </span>
                   </td>
 
-                  {/* DATE (DESKTOP ONLY) */}
                   <td className="hidden md:table-cell px-6 py-4 text-gray-500">
                     {new Date(contact.created_at).toLocaleString()}
                   </td>
 
-                  {/* ACTION */}
                   <td className="px-6 py-4 text-right">
                     <button
                       onClick={() => handleView(contact.id)}
