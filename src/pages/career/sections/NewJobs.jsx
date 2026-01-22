@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
+  fetchJobs,
+  fetchJobById,
+} from "../../../api/job.api";
+import {
   CalendarDays,
   MapPin,
   Building2,
@@ -33,7 +37,7 @@ const JobSkeletonCard = () => (
 
 /* ---------------- MAIN COMPONENT ---------------- */
 const NewJobs = () => {
-  const topRef = useRef(null); // 🔥 component top ref
+  const topRef = useRef(null);
 
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -43,48 +47,49 @@ const NewJobs = () => {
   const [selectedJob, setSelectedJob] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
 
-  const API_BASE = "http://localhost:3000/api";
   const JOBS_PER_PAGE = 9;
 
-  useEffect(() => {
-    // ✅ scroll to component top (NOT page top)
-    if (topRef.current) {
-      topRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-
-    fetchJobs();
-  }, [currentPage]);
-
-  const fetchJobs = async () => {
+  /* ---------------- FETCH JOBS ---------------- */
+  const loadJobs = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        `${API_BASE}/jobdiva/jobs?page=${currentPage}&limit=${JOBS_PER_PAGE}`
-      );
-      const result = await response.json();
 
-      if (result.success) {
-        setJobs(result.data.jobs);
-        setTotalPages(result.data.pagination.totalPages);
-        setTotalJobs(result.data.pagination.totalJobs);
+      const res = await fetchJobs(currentPage, JOBS_PER_PAGE);
+
+      if (res.data?.success) {
+        setJobs(res.data.data.jobs);
+        setTotalPages(res.data.data.pagination.totalPages);
+        setTotalJobs(res.data.data.pagination.totalJobs);
       }
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      // silently fail (optional toast later)
     } finally {
       setLoading(false);
     }
   };
 
-  const handleViewDetails = (job) => {
-    setSelectedJob(job);
-    setShowDetailsModal(true);
+  /* ---------------- EFFECT ---------------- */
+  useEffect(() => {
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+    loadJobs();
+  }, [currentPage]);
+
+  /* ---------------- HANDLERS ---------------- */
+  const handleViewDetails = async (job) => {
+    try {
+      const res = await fetchJobById(job.id); 
+     
+      if (res.data) {
+        setSelectedJob(res.data.data.job);
+        setShowDetailsModal(true);
+      }
+    } catch (err) {}
   };
 
   const handleApply = (job) => {
-    if (job.applyLink && job.applyLink !== "#") {
+    if (job.applyLink) {
       window.open(job.applyLink, "_blank");
     } else {
       alert("Please contact recruiter directly.");
@@ -109,7 +114,7 @@ const NewJobs = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, i) => (
+            {[...Array(9)].map((_, i) => (
               <JobSkeletonCard key={i} />
             ))}
           </div>
@@ -128,7 +133,7 @@ const NewJobs = () => {
             Latest Job Opportunities
           </h1>
 
-          <div className="flex flex-wrap items-center gap-3 mt-4">
+          <div className="flex items-center gap-3 mt-4">
             <span className="px-4 py-1.5 bg-[#007bff] text-white text-sm font-medium rounded-full">
               {totalJobs} Jobs Available
             </span>
@@ -143,9 +148,8 @@ const NewJobs = () => {
           {jobs.map((job) => (
             <div
               key={job.id}
-              className="bg-white rounded-xl border border-gray-200 flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+              className="bg-white rounded-xl border border-gray-200 flex flex-col transition-all hover:-translate-y-1 hover:shadow-lg"
             >
-              {/* CARD HEADER */}
               <div className="p-5 border-b">
                 <span className="inline-block mb-2 px-3 py-1 text-xs font-semibold rounded-full bg-blue-50 text-blue-700">
                   NEW
@@ -159,7 +163,6 @@ const NewJobs = () => {
                 </div>
               </div>
 
-              {/* CARD BODY */}
               <div className="p-5 flex-1 space-y-3">
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <MapPin size={14} />
@@ -179,18 +182,17 @@ const NewJobs = () => {
                 </p>
               </div>
 
-              {/* ACTIONS */}
-              <div className="p-5 pt-0 flex items-center gap-3">
+              <div className="p-5 pt-0 flex gap-3">
                 <button
                   onClick={() => handleApply(job)}
-                  className="inline-flex items-center justify-center bg-[#007bff] hover:bg-[#0069d9] text-white text-sm font-medium px-3 py-1.5 rounded-md transition-all duration-200 hover:scale-[1.03] active:scale-[0.97]"
+                  className="bg-[#007bff] hover:bg-[#0069d9] text-white text-sm font-medium px-3 py-1.5 rounded-md transition"
                 >
                   Apply
                 </button>
 
                 <button
                   onClick={() => handleViewDetails(job)}
-                  className="px-3 py-1.5 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition"
+                  className="px-3 py-1.5 border rounded-md text-sm hover:bg-gray-100 transition"
                 >
                   Details
                 </button>
@@ -205,7 +207,7 @@ const NewJobs = () => {
             <button
               onClick={() => setCurrentPage((p) => p - 1)}
               disabled={currentPage === 1}
-              className="px-3 py-1.5 border rounded-md text-sm disabled:opacity-40 hover:bg-gray-100 transition"
+              className="px-3 py-1.5 border rounded-md disabled:opacity-40"
             >
               <ChevronLeft size={16} />
             </button>
@@ -214,7 +216,7 @@ const NewJobs = () => {
               <button
                 key={i}
                 onClick={() => setCurrentPage(i + 1)}
-                className={`w-8 h-8 rounded-md text-sm font-medium transition ${
+                className={`w-8 h-8 rounded-md text-sm font-medium ${
                   currentPage === i + 1
                     ? "bg-[#007bff] text-white"
                     : "border hover:bg-gray-100"
@@ -227,7 +229,7 @@ const NewJobs = () => {
             <button
               onClick={() => setCurrentPage((p) => p + 1)}
               disabled={currentPage === totalPages}
-              className="px-3 py-1.5 border rounded-md text-sm disabled:opacity-40 hover:bg-gray-100 transition"
+              className="px-3 py-1.5 border rounded-md disabled:opacity-40"
             >
               <ChevronRight size={16} />
             </button>
@@ -235,10 +237,10 @@ const NewJobs = () => {
         )}
       </div>
 
-      {/* MODAL */}
+      {/* DETAILS MODAL */}
       {showDetailsModal && selectedJob && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl max-w-2xl w-full p-6 animate-fadeIn">
+          <div className="bg-white rounded-xl max-w-2xl w-full p-6">
             <h2 className="text-xl font-semibold mb-2">
               {selectedJob.title}
             </h2>
@@ -253,13 +255,13 @@ const NewJobs = () => {
             <div className="flex gap-3">
               <button
                 onClick={() => handleApply(selectedJob)}
-                className="inline-flex items-center justify-center bg-[#007bff] hover:bg-[#0069d9] text-white text-sm font-medium px-3 py-1.5 rounded-md transition-all duration-200 hover:scale-[1.03] active:scale-[0.97]"
+                className="bg-[#007bff] hover:bg-[#0069d9] text-white px-4 py-2 rounded-md text-sm"
               >
                 Apply
               </button>
               <button
                 onClick={() => setShowDetailsModal(false)}
-                className="px-3 py-1.5 border rounded-md text-sm hover:bg-gray-100 transition"
+                className="px-4 py-2 border rounded-md text-sm"
               >
                 Close
               </button>
