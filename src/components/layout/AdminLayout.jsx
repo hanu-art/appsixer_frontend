@@ -59,6 +59,19 @@ const AdminLayout = ({ children }) => {
                 Contacts
               </NavLink>
 
+          <NavLink
+  to="/admin/chat"
+  onClick={() => setOpen(false)}
+  className={({ isActive }) =>
+    `px-6 py-3 text-sm ${
+      isActive ? "bg-white/15" : "hover:bg-white/10"
+    }`
+  }
+>
+  Chat
+</NavLink>
+
+
               <NavLink
                 to="/admin/settings"
                 onClick={() => setOpen(false)}
@@ -106,6 +119,20 @@ const AdminLayout = ({ children }) => {
             >
               Contacts
             </NavLink>
+
+          
+          <NavLink
+  to="/admin/chat"
+  className={({ isActive }) =>
+    `px-6 py-3 text-sm ${
+      isActive ? "bg-white/15 font-medium" : "hover:bg-white/10"
+    }`
+  }
+>
+  Chat
+</NavLink>
+
+
 
             <NavLink
               to="/admin/settings"

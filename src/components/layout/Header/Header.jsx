@@ -47,7 +47,7 @@ const Header = () => {
            {/* LOGO */}
           <Link to="/" className="flex items-center">
   <img
-    src="/logo/appsixer_logo.jpg"
+    src="/logo/logo.png"
     alt="Appsixer Logo"
     className="h-10 w-auto object-contain"
   />

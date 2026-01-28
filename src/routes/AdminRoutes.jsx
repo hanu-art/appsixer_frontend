@@ -4,6 +4,7 @@ import AdminDashboard from "../pages/admin/dashboard/AdminDashboard";
 import AdminContacts from "../pages/admin/dashboard/contacts/AdminContacts";
 import AdminSettings from "../pages/admin/setting/AdminSettings";
 import SingleContactView from "../pages/admin/dashboard/sections/SingleContactView";
+import AdminChat from "../pages/admin/chat/AdminChat";
 const AdminRoutes = () => {
   const isAuthenticated = true; // testing
 
@@ -60,7 +61,16 @@ const AdminRoutes = () => {
         }
       />
 
-
+<Route
+  path="chat"
+  element={
+    isAuthenticated ? (
+      <AdminChat />
+    ) : (
+      <Navigate to="/admin/login" replace />
+    )
+  }
+/>
 
 <Route
   path="settings"
