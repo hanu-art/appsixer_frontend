@@ -45,13 +45,15 @@ const Header = () => {
 
             {/* LOGO */}
            {/* LOGO */}
-          <Link to="/" className="flex items-center">
-  <img
-    src="/logo/logo.png"
-    alt="Appsixer Logo"
-    className="h-10 w-auto object-contain"
-  />
-</Link>
+
+         <img
+  src="/logo/logo.png"
+  alt="Appsixer Logo"
+  className="h-9 w-auto object-contain brightness-0 invert"
+/>
+
+
+
 
 
             {/* DESKTOP NAV */}
@@ -138,11 +140,13 @@ const Header = () => {
             {/* Drawer Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-white/20">
                <Link to="/" onClick={() => setMenuOpen(false)} className="flex items-center gap-2">
-  <img
-    src="/logo/appsixer_logo.jpg"
-    alt="Appsixer Logo"
-    className="h-9 w-auto object-contain bg-white rounded-md px-2 py-1"
-  />
+    
+    <img
+  src="/logo/logo.png"
+  alt="Appsixer Logo"
+  className="h-9 w-auto object-contain brightness-0 invert"
+/>
+
 </Link>
 
 

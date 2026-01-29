@@ -1,4 +1,3 @@
-// src/pages/admin/chat/AdminChat.jsx
 import { useEffect, useState, useRef } from "react";
 import ChatInbox from "./ChatInbox";
 import ChatWindow from "./ChatWindow";
@@ -8,14 +7,16 @@ import { socket } from "../../../socket/socket";
 const AdminChat = () => {
   const [conversations, setConversations] = useState([]);
   const [selectedConversation, setSelectedConversation] = useState(null);
-  const [messages, setMessages] = useState([]); // 🔥 lifted state
+  const [messages, setMessages] = useState([]); // 🔥 single source for chat
   const pollingRef = useRef(null);
 
+  /* ---------------- FETCH INBOX ---------------- */
   const fetchInbox = async () => {
     const res = await getAdminInbox();
     setConversations(res.data.data);
   };
 
+  /* ---------------- SOCKET (ADMIN) ---------------- */
   useEffect(() => {
     fetchInbox();
 
@@ -27,18 +28,22 @@ const AdminChat = () => {
       const msg = data?.message;
       if (!msg) return;
 
-      // inbox always update
+      // inbox always updates
       fetchInbox();
 
-      // 🔥 if same chat is open → update chat
-      if (
-        selectedConversation &&
-        msg.conversationId === selectedConversation.conversationId
-      ) {
-        setMessages((prev) => [...prev, msg]);
-      }
+      // 🔥 update open chat in realtime
+      setMessages((prev) => {
+        if (
+          selectedConversation &&
+          msg.conversationId === selectedConversation.conversationId
+        ) {
+          return [...prev, msg];
+        }
+        return prev;
+      });
     });
 
+    // fallback polling (safe)
     pollingRef.current = setInterval(fetchInbox, 10000);
 
     return () => {
@@ -47,28 +52,45 @@ const AdminChat = () => {
     };
   }, [selectedConversation]);
 
+  /* ---------------- UI ---------------- */
   return (
-    <div className="h-[calc(100vh-120px)] flex">
-      <ChatInbox
-        conversations={conversations}
-        selectedConversation={selectedConversation}
-        onSelect={(conv) => {
-          setSelectedConversation(conv);
-          setMessages([]); // reset when switching chat
-        }}
-      />
+    <div className="h-[calc(100vh-120px)] flex flex-col">
 
-      <ChatWindow
-        conversation={selectedConversation}
-        messages={messages}
-        setMessages={setMessages}
-        onBack={() => {
-          setSelectedConversation(null);
-          setMessages([]);
-        }}
-      />
+      {/* 🔙 BACK TO DASHBOARD */}
+      <div className="mb-3">
+        <button
+          onClick={() => (window.location.href = "/admin/dashboard")}
+          className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+        >
+          ← Back to Dashboard
+        </button>
+      </div>
+
+      {/* CHAT LAYOUT */}
+      <div className="flex flex-1 border rounded-xl bg-white overflow-hidden shadow-sm">
+        {/* LEFT: INBOX */}
+        <ChatInbox
+          conversations={conversations}
+          selectedConversation={selectedConversation}
+          onSelect={(conv) => {
+            setSelectedConversation(conv);
+            setMessages([]); // reset on switch
+          }}
+        />
+
+        {/* RIGHT: CHAT WINDOW */}
+        <ChatWindow
+          conversation={selectedConversation}
+          messages={messages}
+          setMessages={setMessages}
+          onBack={() => {
+            setSelectedConversation(null);
+            setMessages([]);
+          }}
+        />
+      </div>
     </div>
-  );
+  );s
 };
 
 export default AdminChat;
