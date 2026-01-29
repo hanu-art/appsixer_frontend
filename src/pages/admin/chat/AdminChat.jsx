@@ -1,8 +1,8 @@
-// src/pages/admin/chat/AdminChat.jsx
 import { useEffect, useState, useRef } from "react";
 import ChatInbox from "./ChatInbox";
 import ChatWindow from "./ChatWindow";
 import { getAdminInbox } from "../../../api/chat/adminChat.api";
+import { socket } from "../../../socket/socket";
 
 const AdminChat = () => {
   const [conversations, setConversations] = useState([]);
@@ -23,25 +23,39 @@ const AdminChat = () => {
   useEffect(() => {
     fetchInbox();
 
-    // Simple polling for updates (every 10 seconds)
+    // 🔥 SOCKET CONNECT (ADMIN)
+    socket.connect();
+
+    // 🔥 JOIN AS ADMIN
+    socket.emit("join", {
+      role: "admin",
+      adminId: "self", // backend JWT se identify karega
+    });
+
+    // 🔥 VISITOR → ADMIN REALTIME EVENT
+    socket.on("chat:message", (data) => {
+      // Safe approach: inbox refresh
+      fetchInbox();
+    });
+
+    // Existing polling (fallback)
     pollingRef.current = setInterval(fetchInbox, 10000);
 
     return () => {
-      if (pollingRef.current) {
-        clearInterval(pollingRef.current);
-      }
+      socket.off("chat:message");
+      if (pollingRef.current) clearInterval(pollingRef.current);
     };
   }, []);
 
   return (
     <div className="h-[calc(100vh-120px)] flex flex-col">
-      {/* Breadcrumb Navigation */}
+      {/* Breadcrumb */}
       <div className="mb-4 text-sm text-gray-600">
         <a href="/admin/dashboard" className="hover:text-blue-600">Dashboard</a>
         <span className="mx-2">/</span>
         <span className="font-medium">Live Chat</span>
       </div>
-      
+
       <div className="flex flex-1 border rounded-xl bg-white overflow-hidden shadow-sm">
         {/* LEFT: Inbox */}
         <ChatInbox

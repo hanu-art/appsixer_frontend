@@ -1,12 +1,20 @@
-// src/pages/admin/chat/ChatMessage.jsx
 const ChatMessage = ({ message }) => {
   const isAdmin = message.senderType === "admin";
-  
+
   const formatTime = (timestamp) => {
-    if (!timestamp) return '';
+    if (!timestamp) return "";
     const date = new Date(timestamp);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
+
+  // ✅ SAFELY RESOLVE MESSAGE TEXT
+  const messageText =
+    typeof message.message === "string"
+      ? message.message
+      : message.message?.message || "";
 
   // If message is sending (optimistic update)
   if (message.isSending) {
@@ -17,10 +25,16 @@ const ChatMessage = ({ message }) => {
             <div className="flex items-center gap-2">
               <div className="flex gap-1">
                 <div className="h-1.5 w-1.5 bg-white/70 rounded-full animate-bounce"></div>
-                <div className="h-1.5 w-1.5 bg-white/70 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                <div className="h-1.5 w-1.5 bg-white/70 rounded-full animate-bounce" style={{animationDelay: '0.4s'}}></div>
+                <div
+                  className="h-1.5 w-1.5 bg-white/70 rounded-full animate-bounce"
+                  style={{ animationDelay: "0.2s" }}
+                ></div>
+                <div
+                  className="h-1.5 w-1.5 bg-white/70 rounded-full animate-bounce"
+                  style={{ animationDelay: "0.4s" }}
+                ></div>
               </div>
-              <span>{message.message}</span>
+              <span>{messageText}</span>
             </div>
           </div>
         </div>
@@ -30,7 +44,7 @@ const ChatMessage = ({ message }) => {
 
   return (
     <div className={`flex ${isAdmin ? "justify-end" : "justify-start"} mb-3`}>
-      <div className={`max-w-[75%] ${isAdmin ? 'ml-auto' : 'mr-auto'}`}>
+      <div className={`max-w-[75%] ${isAdmin ? "ml-auto" : "mr-auto"}`}>
         <div
           className={`px-4 py-2.5 rounded-2xl text-sm shadow-sm ${
             isAdmin
@@ -38,15 +52,21 @@ const ChatMessage = ({ message }) => {
               : "bg-white text-gray-800 rounded-bl-sm border border-gray-200"
           }`}
         >
-          <div className="break-words leading-relaxed">{message.message}</div>
+          <div className="break-words leading-relaxed">
+            {messageText}
+          </div>
         </div>
-        
+
         {/* Timestamp & Status */}
-        <div className={`flex items-center gap-2 mt-1 px-1 ${isAdmin ? 'justify-end' : 'justify-start'}`}>
+        <div
+          className={`flex items-center gap-2 mt-1 px-1 ${
+            isAdmin ? "justify-end" : "justify-start"
+          }`}
+        >
           <span className="text-xs text-gray-500">
             {formatTime(message.createdAt)}
           </span>
-          
+
           {/* Seen status for admin messages */}
           {isAdmin && message.seen && (
             <span className="text-xs text-blue-500">✓ Seen</span>
