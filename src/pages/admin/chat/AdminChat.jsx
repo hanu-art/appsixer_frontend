@@ -1,3 +1,4 @@
+// src/pages/admin/chat/AdminChat.jsx
 import { useEffect, useState, useRef } from "react";
 import ChatInbox from "./ChatInbox";
 import ChatWindow from "./ChatWindow";
@@ -7,73 +8,65 @@ import { socket } from "../../../socket/socket";
 const AdminChat = () => {
   const [conversations, setConversations] = useState([]);
   const [selectedConversation, setSelectedConversation] = useState(null);
-  const [loadingInbox, setLoadingInbox] = useState(false);
+  const [messages, setMessages] = useState([]); // 🔥 lifted state
   const pollingRef = useRef(null);
 
   const fetchInbox = async () => {
-    try {
-      setLoadingInbox(true);
-      const res = await getAdminInbox();
-      setConversations(res.data.data);
-    } finally {
-      setLoadingInbox(false);
-    }
+    const res = await getAdminInbox();
+    setConversations(res.data.data);
   };
 
   useEffect(() => {
     fetchInbox();
 
-    // 🔥 SOCKET CONNECT (ADMIN)
     socket.connect();
+    socket.emit("join", { role: "admin" });
 
-    // 🔥 JOIN AS ADMIN
-    socket.emit("join", {
-      role: "admin",
-      adminId: "self", // backend JWT se identify karega
-    });
-
-    // 🔥 VISITOR → ADMIN REALTIME EVENT
+    // 🔥 SINGLE SOCKET LISTENER
     socket.on("chat:message", (data) => {
-      // Safe approach: inbox refresh
+      const msg = data?.message;
+      if (!msg) return;
+
+      // inbox always update
       fetchInbox();
+
+      // 🔥 if same chat is open → update chat
+      if (
+        selectedConversation &&
+        msg.conversationId === selectedConversation.conversationId
+      ) {
+        setMessages((prev) => [...prev, msg]);
+      }
     });
 
-    // Existing polling (fallback)
     pollingRef.current = setInterval(fetchInbox, 10000);
 
     return () => {
       socket.off("chat:message");
-      if (pollingRef.current) clearInterval(pollingRef.current);
+      clearInterval(pollingRef.current);
     };
-  }, []);
+  }, [selectedConversation]);
 
   return (
-    <div className="h-[calc(100vh-120px)] flex flex-col">
-      {/* Breadcrumb */}
-      <div className="mb-4 text-sm text-gray-600">
-        <a href="/admin/dashboard" className="hover:text-blue-600">Dashboard</a>
-        <span className="mx-2">/</span>
-        <span className="font-medium">Live Chat</span>
-      </div>
+    <div className="h-[calc(100vh-120px)] flex">
+      <ChatInbox
+        conversations={conversations}
+        selectedConversation={selectedConversation}
+        onSelect={(conv) => {
+          setSelectedConversation(conv);
+          setMessages([]); // reset when switching chat
+        }}
+      />
 
-      <div className="flex flex-1 border rounded-xl bg-white overflow-hidden shadow-sm">
-        {/* LEFT: Inbox */}
-        <ChatInbox
-          loading={loadingInbox}
-          conversations={conversations}
-          selectedConversation={selectedConversation}
-          onSelect={setSelectedConversation}
-        />
-
-        {/* RIGHT: Chat */}
-        <div className="flex-1">
-          <ChatWindow
-            conversation={selectedConversation}
-            onRefreshInbox={fetchInbox}
-            onBack={() => setSelectedConversation(null)}
-          />
-        </div>
-      </div>
+      <ChatWindow
+        conversation={selectedConversation}
+        messages={messages}
+        setMessages={setMessages}
+        onBack={() => {
+          setSelectedConversation(null);
+          setMessages([]);
+        }}
+      />
     </div>
   );
 };
