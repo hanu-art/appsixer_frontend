@@ -10,7 +10,7 @@ const Assurance = () => {
       ([entry]) => {
         if (entry.isIntersecting) {
           setVisible(true);
-          observer.disconnect(); // run once (final section)
+          observer.disconnect();
         }
       },
       { threshold: 0.25 }
@@ -22,46 +22,45 @@ const Assurance = () => {
   return (
     <section
       ref={sectionRef}
-      className="w-full  pt-20 pb-16 md:pt-24 md:pb-20"
+      className="w-full pt-20 pb-16 md:pt-24 md:pb-20 bg-gray-50"
     >
       <div className="mx-auto max-w-7xl px-6 md:px-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch">
 
         {/* LEFT : CONTENT */}
         <div
           className={`
-            rounded-2xl bg-gray-900 p-8 md:p-12 text-white
+            rounded-2xl bg-gray-800 p-8 md:p-12 text-white
             transition-all duration-700 ease-out
-            ${visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-6 scale-95"}
+            ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
           `}
         >
-          <h3 className="text-2xl md:text-3xl font-semibold">
-            We Offer Distinctive Services
+          <h3 className="text-2xl md:text-[1.75rem] font-normal tracking-tight">
+            Staffing Assurance You Can Trust
           </h3>
 
-          <ul className="mt-6 space-y-4 text-white/85 text-sm leading-relaxed">
+          <ul className="mt-6 space-y-4 text-white/70 text-sm leading-relaxed">
             <li>
-              We offer a <strong>1-week trial</strong> to test our skills,
-              communication, and responsiveness. Try us with a small task and
-              let us prove the value we bring.
+              <strong className="text-white/90 font-medium">
+                Risk-free 1-week trial
+              </strong>{" "}
+              to evaluate skills, communication, and delivery before making a
+              long-term commitment.
             </li>
 
             <li>
-              Our resources are fluent in English and communicate clearly via
-              Slack, Email, Google Docs, and Video Conferencing (Zoom, Skype,
-              WhatsApp, or Phone). We have extensive experience working with
-              clients in the United States, Canada, and the United Kingdom.
+              Clear, professional communication using modern collaboration tools.
+              Our teams work daily with clients across the United States, Canada,
+              and the United Kingdom.
             </li>
 
             <li>
-              Our working schedule overlaps with your morning hours in the West,
-              enabling smooth daily discussions. We can also adjust schedules
-              further if additional overlap is required.
+              Working hours aligned with U.S. morning time zones, ensuring smooth
+              collaboration and flexibility when additional overlap is required.
             </li>
 
             <li>
-              During the initial 1–2 weeks, dedicated managers help onboard
-              resources and bring your project up to speed. We guide and support
-              you to achieve your software and IT objectives with confidence.
+              Dedicated managers support onboarding during the initial phase,
+              ensuring a structured transition and steady progress from day one.
             </li>
           </ul>
         </div>
@@ -72,39 +71,38 @@ const Assurance = () => {
             relative rounded-2xl overflow-hidden
             min-h-[420px] md:min-h-full
             transition-all duration-700 ease-out delay-150
-            ${visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-6 scale-95"}
+            ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
           `}
         >
           {/* Image */}
           <img
             src={assureImage}
-            alt="Onshore Staffing Assurance"
+            alt="Staffing Assurance Process"
             className="absolute inset-0 w-full h-full object-cover"
           />
 
-          {/* Dark overlay */}
-          <div className="absolute inset-0 bg-black/60" />
+          {/* Softer overlay */}
+          <div className="absolute inset-0 bg-black/40" />
 
           {/* Content overlay */}
           <div className="relative h-full p-8 md:p-12 text-white flex flex-col justify-center">
-            <h3 className="text-2xl md:text-3xl font-semibold">
-              Onshore Staffing
+            <h3 className="text-2xl md:text-[1.75rem] font-normal tracking-tight">
+              Our Screening & Assurance Process
             </h3>
 
-            <p className="mt-4 text-white/85 text-sm leading-relaxed">
-              We come from Software Engineering and Project Management backgrounds,
-              and we interview candidates as if they were our own hires. Our
-              combined experience of four decades ensures a rigorous and reliable
-              hiring process.
+            <p className="mt-4 text-white/70 text-sm leading-relaxed">
+              Every candidate goes through a structured evaluation process led
+              by experienced engineering and delivery professionals to ensure
+              technical strength, reliability, and cultural alignment.
             </p>
 
-            <ul className="mt-6 space-y-2 text-sm text-white/90">
-              <li>• Understanding the organization and its clients</li>
-              <li>• Identifying required technical and soft skills</li>
-              <li>• Interviewing to find the perfect cultural fit</li>
-              <li>• References from similar projects</li>
-              <li>• Validating candidate experience</li>
-              <li>• Background checks and work history verification</li>
+            <ul className="mt-6 space-y-2 text-sm text-white/75">
+              <li>• Understanding your organization and delivery goals</li>
+              <li>• Defining required technical and communication skills</li>
+              <li>• Conducting technical and behavioral interviews</li>
+              <li>• Reviewing experience from similar engagements</li>
+              <li>• Verifying references and work history</li>
+              <li>• Ensuring reliability through background validation</li>
             </ul>
           </div>
         </div>

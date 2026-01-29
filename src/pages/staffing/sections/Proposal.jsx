@@ -11,7 +11,7 @@ const Proposal = () => {
           {/* Image */}
           <img
             src={staffingTop}
-            alt="Staffing"
+            alt="IT Staffing Solutions"
             className="
               w-full h-full object-cover
               scale-105
@@ -26,29 +26,27 @@ const Proposal = () => {
 
         {/* RIGHT : CONTENT */}
         <div>
-          <h2 className="text-2xl md:text-4xl font-semibold text-gray-900 leading-tight">
-            Best in class software development and information technology
-            offshore staffing solutions.
+          <h2 className="text-2xl md:text-4xl font-semibold text-gray-700 leading-tight">
+            Best-in-class offshore and nearshore IT staffing solutions for U.S. businesses.
           </h2>
 
           <p className="mt-6 text-gray-600 leading-relaxed">
-            Appsixer is a software development company established in 2011 and
-            since our existence we are delivering exceptional results with our
-            innovative solutions via our products and services.
+            Appsixer provides reliable IT staffing services by connecting U.S. organizations
+            with highly skilled technology professionals across offshore and nearshore locations.
+            We help companies scale their teams efficiently with vetted engineers, developers,
+            QA specialists, and IT consultants.
           </p>
 
           <p className="mt-4 text-gray-600 leading-relaxed">
-            Our company has grown from a small group of passionate engineers and
-            business managers to a full-scale mobile software company with a team
-            of 50+ members comprising developers, designers, quality assurance
-            engineers, and project managers.
+            Our staffing model is designed to support flexibility and speed. Whether you need
+            contract-based resources, long-term dedicated teams, or project-aligned staffing,
+            we ensure seamless integration with your internal teams and workflows.
           </p>
 
           <p className="mt-4 text-gray-600 leading-relaxed">
-            With rationalized knowledge of current industry technologies and
-            trends, we specialize in world-class mobile and web development. We
-            prioritize time and cost predictability, assuring 100% client
-            satisfaction.
+            With a strong understanding of U.S. business standards and current technology demands,
+            Appsixer helps reduce hiring overhead, improve delivery predictability, and build
+            long-term staffing partnerships based on trust, transparency, and performance.
           </p>
         </div>
 

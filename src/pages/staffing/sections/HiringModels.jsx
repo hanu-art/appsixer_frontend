@@ -11,14 +11,14 @@ const models = [
       "Dedicated resources",
       "Flexible working hours",
       "Full-time communication",
-      "Acts like in-house employee"
+      "Functions as an extended in-house team member"
     ]
   },
   {
     title: "Fixed Cost / Time",
     icon: FaTasks,
     desc:
-      "Best suited for projects with clear scope and limited budget. This model ensures predictable cost and timely delivery with maximum budget control.",
+      "Best suited for projects with a clearly defined scope and budget. This model ensures predictable cost, controlled execution, and timely delivery.",
     points: [
       "Fixed budget & timeline",
       "Cost-effective delivery",
@@ -31,10 +31,10 @@ const models = [
     icon: FaUsers,
     highlight: true,
     desc:
-      "Hire a complete team on a monthly basis and get full control over resources. Ideal for long-term and scalable projects requiring continuous development.",
+      "Hire a complete team on a monthly engagement and retain full control over resources. Ideal for long-term, scalable initiatives requiring continuous development.",
     points: [
       "Monthly engagement model",
-      "Full control on resources",
+      "Full control over resources",
       "360° project support",
       "Scalable team size"
     ]
@@ -48,9 +48,12 @@ const HiringModels = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setVisible(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect(); // 🔥 animation sirf ek baar
+        }
       },
-      { threshold: 0.25 }
+      { threshold: 0.3 }
     );
 
     if (sectionRef.current) observer.observe(sectionRef.current);
@@ -58,17 +61,20 @@ const HiringModels = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="w-full bg-white py-20 md:py-24">
+    <section
+      ref={sectionRef}
+      className="w-full bg-gray-50 py-20 md:py-24"
+    >
       <div className="mx-auto max-w-7xl px-6 md:px-10">
 
-        {/* OUTER HEADING — ALWAYS CENTER */}
-        <h2 className="text-center text-2xl md:text-4xl font-semibold text-gray-900">
-          Diverse Options for Hiring Our Experts
+        {/* HEADING */}
+        <h2 className="text-center text-2xl md:text-4xl font-medium text-gray-900">
+          Flexible Hiring Models Tailored to Your Needs
         </h2>
 
         <p className="mt-4 text-center text-gray-600 max-w-2xl mx-auto">
-          Choose a flexible engagement model that fits your budget, timeline,
-          and project requirements.
+          Choose an engagement model that aligns with your technical requirements,
+          budget expectations, and delivery timelines.
         </p>
 
         {/* CARDS */}
@@ -80,16 +86,24 @@ const HiringModels = () => {
               <div
                 key={index}
                 className={`
-                  rounded-2xl border p-8
+                  rounded-2xl border p-8 bg-white
                   transition-all duration-700 ease-out
-                  ${item.highlight ? "border-[#007bff] bg-[#007bff]/5" : "border-gray-200"}
-                  ${visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"}
+                  ${
+                    item.highlight
+                      ? "border-[#007bff] bg-[#007bff]/5 scale-[1.02]"
+                      : "border-gray-200"
+                  }
+                  ${
+                    visible
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-6"
+                  }
                 `}
                 style={{ transitionDelay: `${index * 120}ms` }}
               >
                 {/* ICON + TITLE */}
                 <div className="flex flex-col items-center md:items-start text-center md:text-left">
-                  <div className="w-12 h-12 rounded-lg bg-[#007bff]/10 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-xl bg-[#007bff]/10 flex items-center justify-center">
                     <Icon className="text-[#007bff] text-xl" />
                   </div>
 
