@@ -6,7 +6,7 @@ const ImageContentSection = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="w-full bg-white py-10 md:py-10">
+    <section className="w-full bg-white py-16 md:py-20">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
@@ -17,7 +17,7 @@ const ImageContentSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="relative overflow-hidden rounded-xl group"
+            className="relative overflow-hidden rounded-2xl group shadow-sm"
           >
             {/* IMAGE */}
             <img
@@ -25,14 +25,13 @@ const ImageContentSection = () => {
               alt="Appsixer work culture"
               className="
                 w-full h-full object-cover
-                transition-transform duration-700 ease-out
-                group-hover:scale-[1.05]
-                opacity-90
+                transition-all duration-700 ease-out
+                group-hover:scale-[1.04]
               "
             />
 
-            {/* CONSTANT SOFT DARK OVERLAY */}
-            <div className="absolute inset-0 bg-black/45" />
+            {/* SOFT OVERLAY (LIGHTER) */}
+            <div className="absolute inset-0 bg-black/30 transition-opacity duration-500 group-hover:bg-black/25" />
           </motion.div>
 
           {/* RIGHT CONTENT */}
@@ -42,19 +41,30 @@ const ImageContentSection = () => {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h3 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
+            {/* HEADING */}
+            <h3 className="text-2xl md:text-3xl font-medium text-gray-900 mb-3">
               Built to deliver real business impact
             </h3>
 
-            <p className="text-gray-600 leading-relaxed mb-6 max-w-xl">
+            {/* BRAND ACCENT */}
+            <div className="w-10 h-[2px] bg-[#007bff] mb-5" />
+
+            {/* DESCRIPTION */}
+            <p className="text-gray-600 leading-relaxed mb-7 max-w-xl text-[15px]">
               We work closely with businesses to understand their challenges
               and transform ideas into scalable, high-performing digital
               solutions that drive growth and efficiency.
             </p>
 
+            {/* CTA */}
             <button
               onClick={() => navigate("/contact")}
-              className="inline-flex items-center rounded-md bg-[#007bff] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0069d9]"
+              className="
+                inline-flex items-center rounded-md
+                bg-[#007bff] px-5 py-2.5
+                text-sm font-medium text-white
+                transition hover:bg-[#0069d9]
+              "
             >
               Contact Us
             </button>

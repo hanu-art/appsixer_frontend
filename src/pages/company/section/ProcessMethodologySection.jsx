@@ -12,31 +12,31 @@ const container = {
   hidden: {},
   show: {
     transition: {
-      staggerChildren: 0.2,
+      staggerChildren: 0.15,
     },
   },
 };
 
 const card = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 16 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: easeLuxury },
+    transition: { duration: 0.7, ease: easeLuxury },
   },
 };
 
 const ProcessMethodologySection = () => {
   return (
-    <section className="w-full bg-gray-50 py-20 md:py-28">
+    <section className="w-full bg-gray-50 py-20 md:py-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
 
         {/* HEADING */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-4">
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <h2 className="text-3xl md:text-4xl font-medium text-gray-900 mb-3">
             Process & Methodology
           </h2>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-600 text-base md:text-lg">
             How we transform ideas into scalable digital products
           </p>
         </div>
@@ -83,15 +83,27 @@ const ProcessMethodologySection = () => {
               key={index}
               variants={card}
               className="
-                relative rounded-xl bg-white p-8
+                group relative rounded-xl bg-white p-8
                 border border-gray-200
-                transition-all duration-300
-                hover:-translate-y-1 hover:shadow-lg
-                hover:border-[#007bff]/40
+                transition-all duration-200
+                hover:shadow-sm
               "
             >
+              {/* LEFT HOVER BORDER */}
+              <div
+                className="
+                  pointer-events-none
+                  absolute top-0 left-0 h-full
+                  w-[4px]
+                  bg-transparent
+                  rounded-l-xl
+                  transition-colors duration-200
+                  group-hover:bg-[#007bff]
+                "
+              />
+
               {/* STEP NUMBER */}
-              <span className="absolute top-6 right-6 text-sm font-semibold text-gray-300">
+              <span className="absolute top-6 right-6 text-sm font-medium text-gray-300">
                 {item.step}
               </span>
 
@@ -100,16 +112,19 @@ const ProcessMethodologySection = () => {
                 <item.icon size={22} />
               </div>
 
-              <h4 className="text-xl font-semibold text-gray-900 mb-3">
+              {/* TITLE */}
+              <h4 className="text-lg font-medium text-gray-900 mb-3">
                 {item.title}
               </h4>
 
-              <p className="text-gray-600 leading-relaxed">
+              {/* DESCRIPTION */}
+              <p className="text-gray-600 text-sm leading-relaxed">
                 {item.desc}
               </p>
             </motion.div>
           ))}
         </motion.div>
+
       </div>
     </section>
   );
