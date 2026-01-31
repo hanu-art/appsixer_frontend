@@ -55,7 +55,7 @@ const PrivacyPolicy = () => {
           className="mb-12"
         >
           <p className="leading-relaxed text-base">
-            Appsixer LLC ("we," "us," or "our") is committed to protecting and
+            Appsixer IT Staffing & Software Service LLC ("we," "us," or "our") is committed to protecting and
             respecting your privacy. This Privacy Policy explains how we collect,
             use, disclose, and safeguard your information when you visit our
             website <strong className="text-[#007bff]">www.appsixer.com</strong>,

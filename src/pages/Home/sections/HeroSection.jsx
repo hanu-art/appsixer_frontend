@@ -35,7 +35,7 @@ const HeroSection = () => {
         <motion.img
           key={heroImages[activeIndex]}
           src={heroImages[activeIndex]}
-          alt="US IT staffing and custom software development services by Appsixer"
+          alt="IT staffing and  software  services by Appsixer"
           className="absolute inset-0 w-full h-full object-cover"
           initial={{ opacity: 0, scale: 1 }}
           animate={{ opacity: 1, scale: 1.06 }}
@@ -76,13 +76,13 @@ const HeroSection = () => {
 
           {/* HEADING */}
           <h1 className="text-white text-3xl md:text-[42px] font-medium leading-[1.15] mb-6">
-            US IT{" "}
+             IT{" "}
             <span className="text-[#007bff] text-[1.05em] font-semibold">
               Staffing
             </span>{" "}
-            & Custom Software{" "}
+            &  Software{" "}
             <span className="text-[#007bff] text-[1.05em] font-semibold">
-              Development
+              Service
             </span>
           </h1>
 

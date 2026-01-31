@@ -46,11 +46,15 @@ const Header = () => {
             {/* LOGO */}
            {/* LOGO */}
 
-         <img
+        
+ 
+  <Link to="/" className="hover:opacity-90">
+   <img
   src="/logo/logo.png"
   alt="Appsixer Logo"
   className="h-9 w-auto object-contain brightness-0 invert"
 />
+  </Link>
 
 
 
