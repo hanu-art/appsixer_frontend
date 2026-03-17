@@ -19,6 +19,10 @@ export const loginAdmin = async (payload) => {
   const response = await apiClient.post('/auth/login', payload, {
     withCredentials: true,
   });
+ 
+    if (response.data?.success === true) {
+    localStorage.setItem("isAdminLoggedIn", "true");
+  }
   return response.data;
 };
 
@@ -30,7 +34,8 @@ export const logoutAdmin = async () => {
   const response = await apiClient.post('/auth/logout', {
     withCredentials: true,
   });  
- console.log('Logout response:', response);
+
+
   return response.data;
 };
 

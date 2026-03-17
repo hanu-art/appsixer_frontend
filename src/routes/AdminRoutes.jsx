@@ -6,7 +6,7 @@ import AdminSettings from "../pages/admin/setting/AdminSettings";
 import SingleContactView from "../pages/admin/dashboard/sections/SingleContactView";
 import AdminChat from "../pages/admin/chat/AdminChat";
 const AdminRoutes = () => {
-  const isAuthenticated = true; // testing
+  const isAuthenticated =  localStorage.getItem("success"); // testing
 
   return (
     <Routes>

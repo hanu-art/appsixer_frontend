@@ -37,10 +37,9 @@ const OfficesSection = () => {
       flag: "🇺🇸",
       title: "Head Office",
       subtitle: "USA – Headquarters",
-      address: `522 W Riverside Ave Ste N
-Spokane, WA 99201-0581`,
+      address: `30 N Gould St.Sheridan, Wyoming 82801`,
       email: "info@appsixer.com",
-      phone: "+14254006878",
+      phone: "+1 9085048101",
     },
     {
       id: "india",
@@ -49,8 +48,8 @@ Spokane, WA 99201-0581`,
       title: "India Office",
       subtitle: "Development Center",
       address: `Pu-54 Vijaynagar Indore`,
-      email: "contact@appsixer.com",
-      phone: "+919893596975",
+      email: "info@appsixer.com",
+      phone: "+91 9893596975",
       skype: "contact appsixer",
     },
   ];
