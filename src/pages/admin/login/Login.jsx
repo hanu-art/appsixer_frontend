@@ -43,6 +43,7 @@ const Login = () => {
       // popup dikhe → fir redirect
       setTimeout(() => {
         setShowPopup(false);
+       
         navigate("/admin/dashboard");
       }, 1500);
     } catch (err) {

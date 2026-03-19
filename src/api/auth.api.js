@@ -19,7 +19,7 @@ export const loginAdmin = async (payload) => {
   const response = await apiClient.post('/auth/login', payload, {
     withCredentials: true,
   });
- 
+  
     if (response.data?.success === true) {
     localStorage.setItem("isAdminLoggedIn", "true");
   }
